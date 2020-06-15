@@ -2,7 +2,7 @@
     <div class="home-container">
         <div class="home-content">
             <div class="ipt">
-                <input type="text" v-model='ipt' class="ipt-text" placeholder="智能搜索"/>
+                <input type="text" v-model='ipt' class="ipt-text" placeholder="智能搜索" @keyup.enter="search()"/>
                 <Icon type="ios-search" @click="search()" class="icon-search"/>
             </div>
             <div class="main-content">
@@ -72,7 +72,11 @@
                 </div>
                 <!-- right -->
                 <div class="contain-right">
-                    <p class="hot-refer">个性化推荐</p>
+                   <p class="hot-refer">薪资预测</p>
+                   <div class="card-box1">
+                     <p >您的预测薪资：<span style="color:#fb2e03">{{preSalary}}</span>&nbsp;元</p>
+                   </div>
+                    <p class="hot-refer" style="margin-top:20px;">个性化推荐</p>
             <div class="add-scroll">
             <div class="card-box">
                <p class="title">java</p>
@@ -106,6 +110,7 @@ export default {
       gzJobNum:'',
       szJobNum:'',
       shJobNum:'',
+      preSalary:'',
       columns2:[
         {
                         title: '公司',
@@ -203,11 +208,25 @@ export default {
           this.szJobNum = res.data.data[3].jobCount;
           this.shJobNum = res.data.data[4].jobCount;
       })
+    },
+    //薪资预测
+    getSalary(){
+      this.$axios({
+        url:this.urlHost+'model/run',
+        method:'get',
+        dataType:'json',
+        data:{
+          telphone:'13329061556'
+        }
+      }).then(res=>{
+        console.log(res,'resSalary')
+      })
     }
   },
   mounted(){
     this.getTabData();
     this.getCityNum();
+    this.getSalary();
   }
 };
 </script>
@@ -322,6 +341,18 @@ export default {
   border-radius: 10px;
   background   : rgba(56, 76, 93, 0.2);
   }
+  .card-box1 {
+  width: 100%;
+  height: 80px;
+  margin: 0 auto;
+  /* border: 1px dashed #fff; */
+  background: rgba(56, 76, 93, 0.2);
+  color: #fff;
+  padding-left: 15px;
+  line-height: 80px;
+  font-size: 22px;
+  box-shadow:0px 1px 3px 1px #0c696b
+}
 </style>
 <style>
 input {
